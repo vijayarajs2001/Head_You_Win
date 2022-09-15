@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        headCountObject = { player: 0, computer: 0 }
+        counter = 1
+        matchData = []
+        function tossingFunction() {
+            r = 1
+            outcome1 = []
+            outcome2 = []
+            a = setInterval(() => {
+                coinTossingPossibilities = ["Heads", "Tails"]
+                playerToss = (coinTossingPossibilities[Math.floor(Math.random() * 2)])
+                computerToss = (coinTossingPossibilities[Math.floor(Math.random() * 2)])
+                outcome1.push(playerToss)
+                outcome2.push(computerToss)
+                console.log(`Toss: ${r}`)
+                console.log(`Player: ${playerToss}  ---  Computer: ${computerToss}`)
+                console.log()
+                if (playerToss == "Heads") {
+                    headCountObject.player += 1
+                }
+                if (computerToss == "Heads") {
+                    headCountObject.computer += 1
+                }
+                matchData.push({ Round: counter - 1, Player: playerToss, Computer: computerToss })
+                if (r == 10 && (outcome1.length == 10 && outcome2.length == 10)) {
+                    clearInterval(a)
+                    totalNumberOfHeadsComputer = outcome1.filter(n => n == "Heads").length
+                    totalNumberOfHeadsPlayer = outcome2.filter(n => n == "Heads").length
+                    r = 1
+                    outcome1 = []
+                    outcome2 = []
+                    return (score(totalNumberOfHeadsComputer, totalNumberOfHeadsPlayer))
+                }
+                r++
+            }, 250);
+        }
+        wins = []
+        function score(x, y) {
+            if (x > y) {
+                console.log(`Player wins the Computer By ${x-y} points.\n-------------------------------------`)
+                wins.push(`Player wins the Computer By ${x-y} points.`)
+            } else if (x < y) {
+                console.log(`Computer wins Player By ,${y-x} points.\n-------------------------------------`)
+                wins.push(`Computer wins Player By ${y-x} points`)
+            } else if (x == y) {
+                console.log("Both are Winners & the score is ",x,"\n-------------------------------------")
+                wins.push("Both are Winners & the score is ",x)
+            }
+        }
+        finalwins=[]
+        function winnerFunction(x, y) {
+            console.log(x,y)
+            console.log(`==============>GAME OVER<==============`)
+            if (x > y) {
+                console.log("The final Winner Is Player and The Score Is ",x)
+                finalwins.push("The final Winner Is Player and The Score Is ",x)
+            }
+            else if (x < y) {
+                console.log("The Final Winner Is Computer and The Score Is ",y)
+                finalwins.push("The Final Winner Is Computer and The Score Is ",y)
+            }
+            else if (x == y) {
+                console.log("Both Are Winners & the score is ",x)
+                finalwins.push("Both Are Winners & the score is ",x)
+            }
+            else{
+                console.log(hi)
+            }
+        }
+        let f = setInterval(function coinToss() {
+            if (counter == 5) {
+                clearInterval(f)
+                winnerFunction(headCountObject.player,headCountObject.computer)
+                // console.table(matchData)
+                cs = ""
+                cs += "Round,Player,Computer"
+                cs += "\r\n"
+                for (let h = 1, i = 0; h <= 4; h++) {
+                    for (; i < (10 * h); i++) {
+                        cs += matchData[i].Round + "," + matchData[i].Player + "," + matchData[i].Computer + ","
+                        cs += "\r\n"
+                    }
+                    cs += wins[h - 1]
+                    cs += "\r\n"
+                }
+                console.log(cs)
+                console.log(finalwins[finalwins.length - 1])
+                let tempBlob = new Blob([cs], { type: "text\csv" })
+                //download url which is temporary
+                let tempURL = window.URL.createObjectURL(tempBlob)
+                let activation = document.createElement("a")
+                activation.href = tempURL
+                // forcing this actiovation or forcefully downloading
+                    activation.download = "vijay.csv"
+                    // forceful click, will enable download
+                    activation.click()
+                    window.URL.revokeObjectURL(tempURL)
+                    activation.remove()
+            }
+            else {
+                console.log("Round :", counter)
+                tossingFunction()
+                counter++
+                return coinToss
+            }
+        }(), 3750)
+    </script>
+</body>
+
+</html>
