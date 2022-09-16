@@ -13,16 +13,18 @@
         headCountObject = { player: 0, computer: 0 }
         counter = 1
         matchData = []
+        roundWinnerArray = []
+        finalWinnerArray = []
         function tossingFunction() {
             r = 1
-            outcome1 = []
-            outcome2 = []
+            playerTossOutcome = []
+            computerTossOutcome = []
             a = setInterval(() => {
                 coinTossingPossibilities = ["Heads", "Tails"]
                 playerToss = (coinTossingPossibilities[Math.floor(Math.random() * 2)])
                 computerToss = (coinTossingPossibilities[Math.floor(Math.random() * 2)])
-                outcome1.push(playerToss)
-                outcome2.push(computerToss)
+                playerTossOutcome.push(playerToss)
+                computerTossOutcome.push(computerToss)
                 console.log(`Toss: ${r}`)
                 console.log(`Player: ${playerToss}  ---  Computer: ${computerToss}`)
                 console.log()
@@ -33,80 +35,83 @@
                     headCountObject.computer += 1
                 }
                 matchData.push({ Round: counter - 1, Player: playerToss, Computer: computerToss })
-                if (r == 10 && (outcome1.length == 10 && outcome2.length == 10)) {
+                if (r == 10 && (playerTossOutcome.length == 10 && computerTossOutcome.length == 10)) {
                     clearInterval(a)
-                    totalNumberOfHeadsComputer = outcome1.filter(n => n == "Heads").length
-                    totalNumberOfHeadsPlayer = outcome2.filter(n => n == "Heads").length
+                    totalNumberOfHeadsComputer = playerTossOutcome.filter(n => n == "Heads").length
+                    totalNumberOfHeadsPlayer = computerTossOutcome.filter(n => n == "Heads").length
                     r = 1
-                    outcome1 = []
-                    outcome2 = []
+                    playerTossOutcome = []
+                    computerTossOutcome = []
                     return (score(totalNumberOfHeadsComputer, totalNumberOfHeadsPlayer))
                 }
                 r++
-            }, 250);
+            }, 1000);
         }
-        wins = []
         function score(x, y) {
             if (x > y) {
-                console.log(`Player wins the Computer By ${x-y} points.\n-------------------------------------`)
-                wins.push(`Player wins the Computer By ${x-y} points.`)
+                console.log(`--------------------------------------\nPlayer Leads the Computer By ${x - y} point.\n--------------------------------------\n`)
+                roundWinnerArray.push(`Player Leads the Computer By ${x - y} point.`)
             } else if (x < y) {
-                console.log(`Computer wins Player By ,${y-x} points.\n-------------------------------------`)
-                wins.push(`Computer wins Player By ${y-x} points`)
+                console.log(`--------------------------------------\nComputer the Leads Player By ${y - x} point.\n--------------------------------------\n`)
+                roundWinnerArray.push(`Computer Leads the Player By ${y - x} point.`)
             } else if (x == y) {
-                console.log("Both are Winners & the score is ",x,"\n-------------------------------------")
-                wins.push("Both are Winners & the score is ",x)
+                console.log(`-------------------------------------------------\nBoth are Winners in this Round & The Score is ${x}.\n-------------------------------------------------\n`)
+                roundWinnerArray.push(`Both are Winners in this Round & The Score is ${x}.`)
             }
         }
-        finalwins=[]
         function winnerFunction(x, y) {
-            console.log(x,y)
-            console.log(`==============>GAME OVER<==============`)
             if (x > y) {
-                console.log("The final Winner Is Player and The Score Is ",x)
-                finalwins.push("The final Winner Is Player and The Score Is ",x)
+                console.log(`>>>> The final Winner Is Player and The Score Is ${x}. <<<<`)
+                finalWinnerArray.push(`>>>> The final Winner Is Player and The Score Is ${x}. <<<<`)
             }
             else if (x < y) {
-                console.log("The Final Winner Is Computer and The Score Is ",y)
-                finalwins.push("The Final Winner Is Computer and The Score Is ",y)
+                console.log(`>>>> The Final Winner Is Computer and The Score Is ${y}. <<<<`)
+                finalWinnerArray.push(`>>>> The Final Winner Is Computer and The Score Is ${y}. <<<<`)
             }
             else if (x == y) {
-                console.log("Both Are Winners & the score is ",x)
-                finalwins.push("Both Are Winners & the score is ",x)
+                console.log(`>>>> Both Are Winners & The Score is ${x}. <<<<`)
+                finalWinnerArray.push(`>>>> Both Are Winners & The Score is ${x}. <<<<`)
             }
-            else{
-                console.log(hi)
+        }
+        function csv() {
+            cs = ""
+            cs += "Round,Player,Computer"
+            cs += "\r\n"
+            for (let h = 1, i = 0; h <= 4; h++) {
+                for (; i < (10 * h); i++) {
+                    cs += matchData[i].Round + "," + matchData[i].Player + "," + matchData[i].Computer + ","
+                    cs += "\r\n"
+                }
+                cs += roundWinnerArray[h - 1]
+                cs += "\r\n"
             }
+            cs += "----------------------------------------------------------------------"
+            cs += "\r\n"
+            cs += finalWinnerArray[finalWinnerArray.length - 1]
+            cs += "\r\n"
+            cs += "----------------------------------------------------------------------"
+            console.log(cs)
+            let tempBlob = new Blob([cs], { type: "text\csv" })
+            // download url which is temporary
+            let tempURL = window.URL.createObjectURL(tempBlob)
+            let activation = document.createElement("a")
+            activation.href = tempURL
+            // forcing this actiovation or forcefully downloading
+            activation.download = "vijay.csv"
+            // forceful click, will enable download
+            activation.click()
+            window.URL.revokeObjectURL(tempURL)
+            activation.remove()
         }
         let f = setInterval(function coinToss() {
             if (counter == 5) {
                 clearInterval(f)
-                winnerFunction(headCountObject.player,headCountObject.computer)
-                // console.table(matchData)
-                cs = ""
-                cs += "Round,Player,Computer"
-                cs += "\r\n"
-                for (let h = 1, i = 0; h <= 4; h++) {
-                    for (; i < (10 * h); i++) {
-                        cs += matchData[i].Round + "," + matchData[i].Player + "," + matchData[i].Computer + ","
-                        cs += "\r\n"
-                    }
-                    cs += wins[h - 1]
-                    cs += "\r\n"
-                }
-                console.log(cs)
-                console.log(finalwins[finalwins.length - 1])
-                let tempBlob = new Blob([cs], { type: "text\csv" })
-                //download url which is temporary
-                let tempURL = window.URL.createObjectURL(tempBlob)
-                let activation = document.createElement("a")
-                activation.href = tempURL
-                // forcing this actiovation or forcefully downloading
-                    activation.download = "vijay.csv"
-                    // forceful click, will enable download
-                    activation.click()
-                    window.URL.revokeObjectURL(tempURL)
-                    activation.remove()
+                console.log(`==============>GAME OVER<==============`)
+                console.log("\n---------------------------------------------------------")
+                winnerFunction(headCountObject.player, headCountObject.computer)
+                console.log("---------------------------------------------------------")
+                console.table(matchData)
+                csv()
             }
             else {
                 console.log("Round :", counter)
@@ -114,7 +119,7 @@
                 counter++
                 return coinToss
             }
-        }(), 3750)
+        }(), 15000)
     </script>
 </body>
 
