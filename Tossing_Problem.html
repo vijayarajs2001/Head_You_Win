@@ -5,11 +5,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Heads You Win</title>
 </head>
 
 <body>
     <script>
+        numberOfTosses = 10
+        intervalBetweenTosses = 1
+        intervalBetweenRounds = 5
         headCountObject = { player: 0, computer: 0 }
         counter = 1
         matchData = []
@@ -45,32 +48,32 @@
                     return (score(totalNumberOfHeadsComputer, totalNumberOfHeadsPlayer))
                 }
                 r++
-            }, 1000);
+            }, intervalBetweenTosses * 1000);
         }
         function score(x, y) {
             if (x > y) {
                 console.log(`--------------------------------------\nPlayer Leads the Computer By ${x - y} point.\n--------------------------------------\n`)
                 roundWinnerArray.push(`Player Leads the Computer By ${x - y} point.`)
             } else if (x < y) {
-                console.log(`--------------------------------------\nComputer the Leads Player By ${y - x} point.\n--------------------------------------\n`)
+                console.log(`--------------------------------------\nComputer Leads the Player By ${y - x} point.\n--------------------------------------\n`)
                 roundWinnerArray.push(`Computer Leads the Player By ${y - x} point.`)
             } else if (x == y) {
-                console.log(`-------------------------------------------------\nBoth are Winners in this Round & The Score is ${x}.\n-------------------------------------------------\n`)
-                roundWinnerArray.push(`Both are Winners in this Round & The Score is ${x}.`)
+                console.log(`-------------------------------------------------\nBoth are Winners in this Round & the Score is ${x}.\n-------------------------------------------------\n`)
+                roundWinnerArray.push(`Both are Winners in this Round & the Score is ${x}.`)
             }
         }
         function winnerFunction(x, y) {
             if (x > y) {
-                console.log(`>>>> The final Winner Is Player and The Score Is ${x}. <<<<`)
-                finalWinnerArray.push(`>>>> The final Winner Is Player and The Score Is ${x}. <<<<`)
+                console.log(`>>>> The final Winner Is the Player and The Score Is ${x}. <<<<`)
+                finalWinnerArray.push(`>>>> The final Winner Is the Player and The Score Is ${x}. <<<<`)
             }
             else if (x < y) {
-                console.log(`>>>> The Final Winner Is Computer and The Score Is ${y}. <<<<`)
-                finalWinnerArray.push(`>>>> The Final Winner Is Computer and The Score Is ${y}. <<<<`)
+                console.log(`>>>> The Final Winner Is the Computer and The Score Is ${y}. <<<<`)
+                finalWinnerArray.push(`>>>> The Final Winner Is the Computer and The Score Is ${y}. <<<<`)
             }
             else if (x == y) {
-                console.log(`>>>> Both Are Winners & The Score is ${x}. <<<<`)
-                finalWinnerArray.push(`>>>> Both Are Winners & The Score is ${x}. <<<<`)
+                console.log(`>>>> Both Are Winners & the Score is ${x}. <<<<`)
+                finalWinnerArray.push(`>>>> Both Are Winners & the Score is ${x}. <<<<`)
             }
         }
         function csv() {
@@ -85,11 +88,11 @@
                 cs += roundWinnerArray[h - 1]
                 cs += "\r\n"
             }
-            cs += "--------------------------------------------------------------------------"
+            cs += "-------------------------------------------------------------------------"
             cs += "\r\n"
             cs += finalWinnerArray[finalWinnerArray.length - 1]
             cs += "\r\n"
-            cs += "--------------------------------------------------------------------------"
+            cs += "-------------------------------------------------------------------------"
             console.log(cs)
             let tempBlob = new Blob([cs], { type: "text\csv" })
             // download url which is temporary
@@ -97,7 +100,7 @@
             let activation = document.createElement("a")
             activation.href = tempURL
             // forcing this actiovation or forcefully downloading
-            activation.download = "vijay.csv"
+            activation.download = "Heads You Win.csv"
             // forceful click, will enable download
             activation.click()
             window.URL.revokeObjectURL(tempURL)
@@ -119,7 +122,7 @@
                 counter++
                 return coinToss
             }
-        }(), 15000)
+        }(), (numberOfTosses + intervalBetweenRounds) * 1000)
     </script>
 </body>
 
