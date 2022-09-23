@@ -10,44 +10,44 @@
 
 <body>
     <script>
-        numberOfTosses = 10
-        intervalBetweenTosses = 1
-        intervalBetweenRounds = 5
-        headCountObject = { player: 0, computer: 0 }
-        counter = 1
+        let numberOfTosses = 10
+        let intervalBetweenTosses = 1
+        let intervalBetweenRounds = 5
+        const headCountObject = { player: 0, computer: 0 }
+        let counter = 1
         matchData = []
         roundWinnerArray = []
         finalWinnerArray = []
         function tossingFunction() {
-            r = 1
+            let tossCount = 1
             playerTossOutcome = []
             computerTossOutcome = []
-            a = setInterval(() => {
+            let a = setInterval(() => {
                 coinTossingPossibilities = ["Heads", "Tails"]
                 playerToss = (coinTossingPossibilities[Math.floor(Math.random() * 2)])
                 computerToss = (coinTossingPossibilities[Math.floor(Math.random() * 2)])
                 playerTossOutcome.push(playerToss)
                 computerTossOutcome.push(computerToss)
-                console.log(`Toss: ${r}`)
+                console.log(`Toss: ${tossCount}`)
                 console.log(`Player: ${playerToss}  ---  Computer: ${computerToss}`)
                 console.log()
-                if (playerToss == "Heads") {
+                if (playerToss === "Heads") {
                     headCountObject.player += 1
                 }
-                if (computerToss == "Heads") {
+                if (computerToss === "Heads") {
                     headCountObject.computer += 1
                 }
                 matchData.push({ Round: counter - 1, Player: playerToss, Computer: computerToss })
-                if (r == 10 && (playerTossOutcome.length == 10 && computerTossOutcome.length == 10)) {
+                if (tossCount === 10) {
                     clearInterval(a)
                     totalNumberOfHeadsComputer = playerTossOutcome.filter(n => n == "Heads").length
                     totalNumberOfHeadsPlayer = computerTossOutcome.filter(n => n == "Heads").length
-                    r = 1
+                    tossCount = 1
                     playerTossOutcome = []
                     computerTossOutcome = []
                     return (score(totalNumberOfHeadsComputer, totalNumberOfHeadsPlayer))
                 }
-                r++
+                tossCount++
             }, intervalBetweenTosses * 1000);
         }
         function score(x, y) {
@@ -57,7 +57,7 @@
             } else if (x < y) {
                 console.log(`--------------------------------------\nComputer Leads the Player By ${y - x} point.\n--------------------------------------\n`)
                 roundWinnerArray.push(`Computer Leads the Player By ${y - x} point.`)
-            } else if (x == y) {
+            } else if (x === y) {
                 console.log(`-------------------------------------------------\nBoth are Winners in this Round & the Score is ${x}.\n-------------------------------------------------\n`)
                 roundWinnerArray.push(`Both are Winners in this Round & the Score is ${x}.`)
             }
@@ -71,7 +71,7 @@
                 console.log(`>>>> The Final Winner Is the Computer and The Score Is ${y}. <<<<`)
                 finalWinnerArray.push(`>>>> The Final Winner Is the Computer and The Score Is ${y}. <<<<`)
             }
-            else if (x == y) {
+            else if (x === y) {
                 console.log(`>>>> Both Are Winners & the Score is ${x}. <<<<`)
                 finalWinnerArray.push(`>>>> Both Are Winners & the Score is ${x}. <<<<`)
             }
@@ -107,7 +107,7 @@
             activation.remove()
         }
         let f = setInterval(function coinToss() {
-            if (counter == 5) {
+            if (counter === 5) {
                 clearInterval(f)
                 console.log(`==============>GAME OVER<==============`)
                 console.log("\n---------------------------------------------------------")
